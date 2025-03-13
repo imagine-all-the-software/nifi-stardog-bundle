@@ -1,43 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.stardog</groupId>
-		<artifactId>nifi-stardog-bundle</artifactId>
-		<version>${revision}</version>
-	</parent>
+    <parent>
+        <groupId>com.stardog</groupId>
+        <artifactId>nifi-stardog-bundle</artifactId>
+        <version>1.26.0</version>
+    </parent>
 
-	<artifactId>nifi-stardog-connection-service-api</artifactId>
-	<packaging>jar</packaging>
+    <artifactId>nifi-stardog-connection-service-api</artifactId>
+    <packaging>jar</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.nifi</groupId>
-			<artifactId>nifi-api</artifactId>
-			<version>${nifi.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.nifi</groupId>
-			<artifactId>nifi-utils</artifactId>
-			<version>${nifi.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.complexible.stardog</groupId>
-			<artifactId>stardog-api</artifactId>
-			<version>${stardog.version}</version>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-api</artifactId>
+            <version>${nifi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-utils</artifactId>
+            <version>${nifi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.complexible.stardog</groupId>
+            <artifactId>stardog-api</artifactId>
+            <version>${stardog.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.json</groupId>
+                    <artifactId>json</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
-		<!-- This service-api project does not depend on client-http directly. This dependency is here so it is
-		shared by the service and processor projects, loaded by a single class loader. When each project has its
-		own dependency it's possible to have, say, VirtualGraphAdminConnection loaded by one class loader and
-		HttpVirtualGraphAdminConnectionView loaded by another, leading to exceptions when we invoke
-		connection.admin().as(VirtualGraphAdminConnection.class). -->
-		<dependency>
-			<groupId>com.complexible.stardog</groupId>
-			<artifactId>client-http</artifactId>
-			<version>${stardog.version}</version>
-			<type>pom</type>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.complexible.stardog</groupId>
+            <artifactId>client-http</artifactId>
+            <version>${stardog.version}</version>
+            <type>pom</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.json</groupId>
+                    <artifactId>json</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
 </project>

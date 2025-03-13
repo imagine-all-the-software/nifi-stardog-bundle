@@ -407,8 +407,16 @@ public class StardogPut extends AbstractStardogProcessor {
                     }
                     properties.putAll(propsFromFile);
                 }
-
-                vgConn.importFile(mappingString, properties, connection.name(), targetGraph, in, fileType);
+                String filename = inputFile.getAttribute("filename");
+                File fileToImport = createTempFileFromStream(in, filename);
+                try {
+                    vgConn.importFile(mappingString, properties, connection.name(), targetGraph, fileToImport, fileType);
+                } finally {
+                    // Try to delete the file immediately; if that fails, schedule deletion on JVM exit
+                    if (!fileToImport.delete()) {
+                        fileToImport.deleteOnExit();
+                    }
+                }
             }
             else {
                 connection.begin();
@@ -472,6 +480,18 @@ public class StardogPut extends AbstractStardogProcessor {
             }
         }
     }
+
+    private File createTempFileFromStream(InputStream in, String filename) throws IOException {
+        // Create a temporary file in the system temporary directory because importFile() needs a Java FileObject
+        File tmpDir = new File(System.getProperty("java.io.tmpdir"));
+        File tempFile = File.createTempFile("StardogPut_" + filename, ".tmp", tmpDir);
+        try (OutputStream os = Files.newOutputStream(tempFile.toPath())) {
+            ByteStreams.copy(in, os);
+        }
+        in.close();
+        return tempFile;
+    }
+
 
     static class PropertySetter {
         private final ProcessContext mContext;

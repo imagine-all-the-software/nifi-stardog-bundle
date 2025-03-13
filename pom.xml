@@ -5,17 +5,17 @@
     <parent>
         <groupId>org.apache.nifi</groupId>
         <artifactId>nifi-nar-bundles</artifactId>
-        <version>1.11.4</version>
+        <version>1.26.0</version>
     </parent>
 
     <groupId>com.stardog</groupId>
     <artifactId>nifi-stardog-bundle</artifactId>
-    <version>${revision}</version>
+    <version>1.26.0</version>
     <packaging>pom</packaging>
 
     <properties>
-        <nifi.version>1.21.0</nifi.version>
-        <stardog.version>10.0.0</stardog.version>        
+        <nifi.version>1.26.0</nifi.version>
+        <stardog.version>11.0.0</stardog.version>        
         <nifi.groovy.version>2.5.6</nifi.groovy.version><!-- https://stackoverflow.com/a/69388478 -->
         <revision>2.0.1</revision><!-- clear graph query added in 2.0.1 -->
     </properties>
@@ -26,6 +26,7 @@
         <module>nifi-stardog-services</module>
         <module>nifi-stardog-services-nar</module>
         <module>nifi-stardog-processors</module>
+        <module>nifi-stardog-processors-nar</module>
         <module>nifi-stardog-nar</module>
     </modules>
 
@@ -54,8 +55,8 @@
 
     <repositories>
         <repository>
-            <id>stardog-public</id>
-            <url>https://maven.stardog.com</url>
+            <id>maven-stardog-remote</id>
+            <url>https://artifactory.lgt.com:443/artifactory/maven-stardog-remote/</url>
         </repository>        
     </repositories>
 
